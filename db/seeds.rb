@@ -8,6 +8,10 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+user = User.create!({
+    email: 'test1@gmail.com',
+    password: '123456'
+})
 
 5.times do |i|
     property = Property.create!({
@@ -24,4 +28,17 @@
     property.images.attach(io: File.open("db/images/p_#{i + 1}.jpg"), filename: property.name)
     property.images.attach(io: File.open("db/images/p_#{i + 5}.jpg"), filename: property.name)
 
+    ((5..10).to_a.sample).times do
+        Review.create!({
+            content: Faker::Lorem.paragraph(sentence_count: 10),
+            cleanliness_rating: (1..5).to_a.sample,
+            checkin_rating: (1..5).to_a.sample,
+            accuracy_rating: (1..5).to_a.sample,
+            communication_rating: (1..5).to_a.sample,
+            location_rating: (1..5).to_a.sample,
+            value_rating: (1..5).to_a.sample,
+            property: property,
+            user: user
+        })
+    end
 end
