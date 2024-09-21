@@ -9,8 +9,8 @@
 #   end
 
 
-20.times do
-    Property.create!({
+5.times do |i|
+    property = Property.create!({
         name: Faker::Lorem.unique.sentence(word_count: 3),
         description: Faker::Lorem.paragraph(sentence_count: 10),
         headline: Faker::Lorem.unique.sentence(word_count: 3),
@@ -21,4 +21,7 @@
         country: Faker::Address.country,
         price: Money.from_amount((50..100).to_a.sample, 'USD')
     })
+    property.images.attach(io: File.open("db/images/p_#{i + 1}.jpg"), filename: property.name)
+    property.images.attach(io: File.open("db/images/p_#{i + 5}.jpg"), filename: property.name)
+
 end
