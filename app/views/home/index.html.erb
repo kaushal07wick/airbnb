@@ -15,14 +15,14 @@
                 <a href="#">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <%= property.city %>, <%= property.country%>
-               
                 </a>
                 </h3>
                 <p class="font-light text-sm">&#9733;4.8</p>
                 </div>
                 <p class="mt-0.5 text-sm text-gray-500">Hosted By Kaushal</p>
                 <p class="mt-0.5 text-sm text-gray-500">19 - 25 Sept</p>
-                <p class="mt-0.5 text-sm font-light text-black"><span class="font-medium">$1000 per Night</span></p>
+                <p class="mt-0.5 text-sm font-light text-black">
+                  <span class="font-medium"><%= humanized_money_with_symbol(property.price)%> per Night</span></p>
                 </div>
         </div>
     <%end%>
