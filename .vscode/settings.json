@@ -1,3 +1,4 @@
 {
-    "editor.fontFamily": "Agave Nerd Font"
+    "editor.fontFamily": "Agave Nerd Font",
+    "files.autoSave": "afterDelay"
 }
