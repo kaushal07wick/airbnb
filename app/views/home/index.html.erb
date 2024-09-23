@@ -1,9 +1,7 @@
 </div>
 <div class="property-item-wrapper bg-white">
   <div class="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
-
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+   <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
       <% @properties.each do |property| %>
         <div class="group relative">
           <div class="w-full overflow-hidden rounded-md bg-gray-200">
@@ -49,8 +47,8 @@
                 </h3>
                 <p class="font-light text-sm">&#9733;<%= property.average_final_rating.round(2) %></p>
                 </div>
-                <p class="mt-0.5 text-sm text-gray-500">Hosted By Kaushal</p>
-                <p class="mt-0.5 text-sm text-gray-500">19 - 25 Sept</p>
+                <%# TODO: Add distance from property based on user location  %>
+                <p class="mt-0.5 text-sm text-gray-500"><%= property.available_dates.first %> - <%= property.available_dates.last %></p>
                 <p class="mt-0.5 text-sm font-light text-black">
                   <span class="font-medium"><%= humanized_money_with_symbol(property.price)%> per Night</span></p>
                 </div>

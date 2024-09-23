@@ -17,4 +17,6 @@ Rails.application.routes.draw do
     resources :wishlists, only: [:create, :destroy]
   end
 
+  resources :properties
+
 end
