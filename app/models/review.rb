@@ -20,6 +20,6 @@ class Review < ApplicationRecord
       location_rating +
       value_rating
     update_column(:final_rating, total_points.to_f / 6)
-    property.update_average_final_rating
+    property.update_average_rating
   end
 end
