@@ -34,7 +34,7 @@
       </div>
     </div>
     <!-- Image gallery -->
-    <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-2 lg:px-8">
+    <div class="mx-auto mt-2 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:gap-x-2 lg:px-8">
       <div class="aspect-h-2 aspect-w-3 hidden overflow-hidden rounded-l-3xl lg:block col-span-2">
           <%= image_tag @property.images[0], class:"h-full w-full object-cover object-center" %>
       </div>
@@ -56,10 +56,31 @@
       </div>
     </div>
 
-    <!-- Product info -->
-    <div class="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
+    <!-- Property info -->
+    <div class="mx-auto max-w-2xl px-4 pt-4 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-4">
       <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Basic Tee 6-Pack</h1>
+        <h2 class="text-3xl font-semibold tracking-tight text-gray-900"><%= @property.city %> in <%= @property.country %></h2>
+          <div class="mt-1 font-light">
+          <%= t('guests', count: @property.guest_count) %> &#183; <%= t('bedrooms', count: @property.bedroom_count) %> &#183; <%= t('beds', count: @property.bed_count) %> &#183; <%= t('bathrooms', count: @property.bathroom_count) %>
+          </div>
+            <div class="mt-1 flex text-base items-center">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 32 32" 
+                aria-hidden="true" 
+                role="presentation" 
+                focusable="false"
+                class="me-1"
+                style="display: inline; height: 16px; width: 16px; fill: currentcolor;"
+              >
+                <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
+              </svg>
+              <% if @property.reviews_count != 0 %>
+                <span class="font-medium"><%= (@property.average_final_rating).round(2) %> · <span class="underline"><%= @property.reviews_count %> reviews</span> </span>
+              <% else %>
+                <span class="font-light">No reviews yet</span>
+              <% end %>
+          </div>
       </div>
 
       <!-- Options -->
@@ -237,7 +258,7 @@
           <h3 class="sr-only">Description</h3>
 
           <div class="space-y-6">
-            <p class="text-base text-gray-900">The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: &quot;Black&quot;. Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>
+            <p class="text-base text-gray-900">bjvrbvbkbvk </p>
           </div>
         </div>
 

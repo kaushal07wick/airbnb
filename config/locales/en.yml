@@ -29,3 +29,15 @@
 
 en:
   hello: "Hello world"
+  bedrooms:
+    one: "%{count} bedroom"
+    other: "%{count} bedrooms"
+  guests:
+    one: "%{count} guest"
+    other: "%{count} guests"  
+  beds:
+    one: "%{count} bed"
+    other: "%{count} beds"  
+  bathrooms:
+    one: "%{count} bathroom"
+    other: "%{count} bathrooms"
