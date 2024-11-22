@@ -1,3 +1,4 @@
+require 'open-uri'
 # This file should ensure the existence of records required to run the application in every environment (production,
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
@@ -19,10 +20,37 @@ Listing is not available for booking by nationalities prohibited by local law.</
 <p>HSR22-004196</p>
 DESCRIPTION
 
+pictures = []
+20.times do 
+    pictures << URI.parse(Faker::LoremFlickr.image).open
+end
+
 user = User.create!({
     email: 'test1@gmail.com',
-    password: '123456'
+    password: '123456',
+    name: Faker::Lorem.unique.sentence(word_count: 3),
+    address_1: Faker::Address.street_address,
+    address_2: Faker::Address.street_name,
+    city: Faker::Address.city,
+    state: Faker::Address.state,
+    country: Faker::Address.country,
 })
+
+user.picture.attach(io: pictures[0], filename: user.name)
+
+19.times do |i|
+    random_user = User.create!({
+        email: "test#{i + 2}@gmail.com",
+        password: '123456',
+        name: Faker::Lorem.unique.sentence(word_count: 3),
+        address_1: Faker::Address.street_address,
+        address_2: Faker::Address.street_name,
+        city: Faker::Address.city,
+        state: Faker::Address.state,
+        country: Faker::Address.country,
+    })
+    random_user.picture.attach(io: pictures[i+1], filename: user.name)
+end
 
 5.times do |i|
     property = Property.create!({
@@ -59,7 +87,7 @@ user = User.create!({
             location_rating: (1..5).to_a.sample,
             value_rating: (1..5).to_a.sample,
             property: property,
-            user: user
+            user: User.all.sample
         })
     end
 end
