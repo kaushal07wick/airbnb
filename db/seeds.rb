@@ -20,6 +20,21 @@ Listing is not available for booking by nationalities prohibited by local law.</
 <p>HSR22-004196</p>
 DESCRIPTION
 
+amenity1 = Amenity.create!(name: 'kitchen', description: "Private Kitchen")
+amenity1.icon.attach(io: File.open("app/assets/images/amenity_icons/kitchen.svg"), filename: amenity1.name)
+
+amenity2 = Amenity.create!(name: 'ac', description: "Air Conditioner")
+amenity2.icon.attach(io: File.open("app/assets/images/amenity_icons/ac.svg"), filename: amenity2.name)
+
+amenity3 = Amenity.create!(name: 'parking', description: "Dedicated Parking")
+amenity3.icon.attach(io: File.open("app/assets/images/amenity_icons/parking.svg"), filename: amenity3.name)
+
+amenity4 = Amenity.create!(name: 'tv', description: "TV with Netflix")
+amenity4.icon.attach(io: File.open("app/assets/images/amenity_icons/tv.svg"), filename: amenity4.name)
+
+amenity5 = Amenity.create!(name: 'wifi', description: "Wifi")
+amenity5.icon.attach(io: File.open("app/assets/images/amenity_icons/wifi.svg"), filename: amenity5.name)
+
 pictures = []
 20.times do 
     pictures << URI.parse(Faker::LoremFlickr.image).open
