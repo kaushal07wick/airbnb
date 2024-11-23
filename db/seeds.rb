@@ -20,20 +20,19 @@ Listing is not available for booking by nationalities prohibited by local law.</
 <p>HSR22-004196</p>
 DESCRIPTION
 
-amenity1 = Amenity.create!(name: 'kitchen', description: "Private Kitchen")
-amenity1.icon.attach(io: File.open("app/assets/images/amenity_icons/kitchen.svg"), filename: amenity1.name)
 
-amenity2 = Amenity.create!(name: 'ac', description: "Air Conditioner")
-amenity2.icon.attach(io: File.open("app/assets/images/amenity_icons/ac.svg"), filename: amenity2.name)
+ameneties_data = [
+    {name: 'kitchen', icon: "kitchen.svg", description: "Private Kitchen"},
+    {name: 'ac', icon: "ac.svg", description: "Air Conditioner"},
+    {name: 'parking', icon: "parking.svg", description: "Dedicated Parking"},
+    {name: 'tv', icon: "tv.svg", description: "TV with Netflix"},
+    {name: 'wifi', icon: "wifi.svg", description: "Wifi"},
+]
 
-amenity3 = Amenity.create!(name: 'parking', description: "Dedicated Parking")
-amenity3.icon.attach(io: File.open("app/assets/images/amenity_icons/parking.svg"), filename: amenity3.name)
-
-amenity4 = Amenity.create!(name: 'tv', description: "TV with Netflix")
-amenity4.icon.attach(io: File.open("app/assets/images/amenity_icons/tv.svg"), filename: amenity4.name)
-
-amenity5 = Amenity.create!(name: 'wifi', description: "Wifi")
-amenity5.icon.attach(io: File.open("app/assets/images/amenity_icons/wifi.svg"), filename: amenity5.name)
+ameneties_data.each do |data|
+    amenity = Amenity.create!(name: data[:name], description: data[:description])
+    amenity.icon.attach(io: File.open("app/assets/images/amenity_icons/#{data[:icon]}"), filename: amenity.name)
+end
 
 pictures = []
 20.times do 
@@ -45,7 +44,7 @@ user = User.create!({
     password: '123456',
     name: Faker::Lorem.unique.sentence(word_count: 3),
     address_1: Faker::Address.street_address,
-    address_2: Faker::Address.street_name,
+    address_2: Faker::Address.street_name,  
     city: Faker::Address.city,
     state: Faker::Address.state,
     country: Faker::Address.country,
@@ -91,6 +90,10 @@ end
     property.images.attach(io: File.open("db/images/p_9.jpg"), filename: property.name)
     property.images.attach(io: File.open("db/images/p_10.jpg"), filename: property.name)
 
+
+    ((1..(ameneties_data.length() - 1)).to_a.sample).times do
+        property.ameneties << Amenity.all.sample
+    end 
 
     ((5..10).to_a.sample).times do
         Review.create!({
