@@ -21,7 +21,7 @@ Listing is not available for booking by nationalities prohibited by local law.</
 DESCRIPTION
 
 
-ameneties_data = [
+amenities_data = [
   {name: 'Air conditioning', icon: "air_conditioning.svg"},
   {name: 'Balcony', icon: "balcony.svg"},
   {name: 'Bed linen', icon: "bed_linen.svg"},
@@ -63,7 +63,7 @@ ameneties_data = [
   {name: 'Wifi', icon: "wifi.svg"},
 ]
 
-ameneties_data.each do |data|
+amenities_data.each do |data|
     amenity = Amenity.create!(name: data[:name], icon: data[:icon] ,description: data[:description])
 end
 
@@ -124,10 +124,10 @@ end
     property.images.attach(io: File.open("db/images/p_10.jpg"), filename: property.name)
 
     amenity_set = Set.new
-    ((10..(ameneties_data.length() - 1)).to_a.sample).times do
+    ((10..(amenities_data.length() - 1)).to_a.sample).times do
         amenity = Amenity.all.sample
         unless amenity_set.include?(amenity.id)
-            property.ameneties << amenity
+            property.amenities << amenity
             amenity_set << amenity.id
         end
     end 
