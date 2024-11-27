@@ -75,4 +75,19 @@ export default class extends Controller {
   calculateTotalAmount(baseFareValue, serviceFeeValue){
     return parseFloat((baseFareValue + serviceFeeValue).toFixed(2));
   }
+
+  reserveProperty(e){
+    e.preventDefault();
+
+    const paramsData = {
+      checkin_date: "01-12-2024",
+      checkout_date: "03-12-2024",
+    }
+
+    const paramsUrl = (new URLSearchParams(paramsData)).toString();
+
+    const baseURL = e.target.dataset.reservePropertyUrl;
+
+    Turbo.visit(`${baseURL}?${paramsUrl}`);
+  }
 }
