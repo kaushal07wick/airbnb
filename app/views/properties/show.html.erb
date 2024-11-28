@@ -67,7 +67,7 @@
     </div>
 
     <!-- Property info -->
-    <div class="mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8">
+    <div class="flex mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8">
       <div class="lg:col-span-2 lg:pr-8">
         <h2 class="text-xl font-medium leading-6 text-gray-900 sm:truncate"><%= @property.name %>, <%= @property.country %></h2>
         <div class="mt-1 font-light">
@@ -94,6 +94,26 @@
         </div>
       </div>
 
+      <div class="py-10 lg:col-span-2 lg:col-start-1 lg:pr-8">
+        <!-- Description and details -->
+        <div class="border-t border-gray-200 pt-10 mt-4">
+          <h3 class="sr-only">Description</h3>
+
+          <div class="space-y-6">
+            <p class="text-base text-gray-900"><%= @property.description.to_plain_text.truncate(400) %></p>
+            <% if @property.description.to_plain_text.length > 400 %>
+              <div
+                data-controller="description"
+                data-action="click->description#toggleDescriptionModal"
+                class="flex items-center gap-1">
+                <span class="font-medium underline">Show more</span>
+                <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 12px; width: 12px; display: block; fill: var(--f-k-smk-x);"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg>
+              </div>
+              <%= render 'shared/modal', modalTriggerId:"description", content: 'properties/description_modal' , content_params: {description: @property.description}%>
+            <% end %>
+          </div>
+        </div>
+      </div>
       <!-- Booking Component -->
       <div 
         class="mt-4 lg:mt-0 border-2 rounded-2xl p-6 shadow-xl"
@@ -102,8 +122,7 @@
         data-blocked-dates="<%= @blocked_dates %>"
         >
         <h2 class="sr-only">Booking Information</h2>
-        <p class="text-lg font-light tracking-tight text-gray-900"> <span class="text-3xl font-semibold"><%= humanized_money_with_symbol(@property.price)%></span> night</p>
-</p>
+        <p class="text-lg font-light tracking-tight text-gray-900"> <span class="text-3xl font-semibold"><%= humanized_money_with_symbol(@property.price)%></span> night</p></p>
         <div class="flex mt-6">
           <div class="rounded-l-lg px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-primary">
             <label for="checkin" class="block text-xs font-medium text-gray-900">Check-In</label>
@@ -157,27 +176,6 @@
         </form>
       </div>
 
-      <div class="py-10 lg:col-span-2 lg:col-start-1 lg:pr-8">
-        <!-- Description and details -->
-        <div class="border-t border-gray-200 pt-10 mt-4">
-          <h3 class="sr-only">Description</h3>
-
-          <div class="space-y-6">
-            <p class="text-base text-gray-900"><%= @property.description.to_plain_text.truncate(400) %></p>
-            <% if @property.description.to_plain_text.length > 400 %>
-              <div
-                data-controller="description"
-                data-action="click->description#toggleDescriptionModal"
-                class="flex items-center gap-1">
-                <span class="font-medium underline">Show more</span>
-                <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 12px; width: 12px; display: block; fill: var(--f-k-smk-x);"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg>
-              </div>
-              <%= render 'shared/modal', modalTriggerId:"description", content: 'properties/description_modal' , content_params: {description: @property.description}%>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      
     <!-- Ameneties -->
     <%= render :partial => 'properties/amenities', :locals => {:amenities => @property.amenities} %>
       
