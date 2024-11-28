@@ -1,15 +1,3 @@
-<h1>Bookings</h1>
-
-<p><%= @checkin_date %></p>
-<p><%= @checkout_date %></p>
-<p><%= @total_nights %></p>
-
-<p><%= @base_fare %></p>
-<p><%= @service_fee %></p>
-<p><%= @total_amount %></p>
-
-<p><%= @property.name %></p>
-
 <div class="bg-white">
   <main class="pt-4 pb-16">
     <div class="mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:grid-rows-[auto,auto,1fr] lg:gap-x-20 lg:px-8">
@@ -28,12 +16,8 @@
         </div>
         <div>
             <h3 class="mt-16 border-t border-gray-300 pt-12 text-2xl font-medium leading-6 text-gray-900 ">Pay With</h3>
+            <%= stripe_elements_tag submit_path: root_path, css_path: 'stripe.css' %>
         </div>
-        <button 
-            type="submit" 
-            class="mt-12 flex w-full items-center justify-center rounded-md border border-transparent bg-primary-dark px-8 py-3 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >Confirm and Pay</button>
-
         <div class="mt-12 border-t border-gray-300 pt-12">
           <h3 class="text-2xl font-medium text-gray-900">Ground rules</h3>
           <p class="mt-6 font-light">We ask every guest to remember a few simple things about what makes a great guest.</p>
@@ -51,23 +35,22 @@
 
     <!-- Booking Component -->
     <div class="mt-4 lg:mt-0 border-2 border-gray-300 lg:col-span-2 rounded-2xl p-6 h-min"
-     data-controller="booking"
      data-per-night-price="<%= humanized_money(@property.price)%>"
      data-blocked-dates="<%= @blocked_dates %>">
-        <h2 class="sr-only">Booking Information</h2>
-            <div class="m-6">
-                <div class="flex items-center">
-                <%= image_tag @property.images[0], class:"w-24 h-24 object-cover rounded-md"%>
-                <div class="ml-3 text-black font-medium">
-                   <div class="font-medium text-lg"><%= @property.name %> - <%= @property.city %>, <%= @property.state %></div>
-                    <p class="font-light text-gray-700">Room in the Guest House</p>
-                    <span class="inline-flex items-center pointer-events-none block text-sm font-normal text-black">
-                    <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
-                        <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
-                    </svg>
-                    <%= @property.average_final_rating.round(2) %> (<%= @property.reviews_count %> reviews)
-                    </span>
-                </div>
+    <h2 class="sr-only">Booking Information</h2>
+        <div class="m-6">
+            <div class="flex items-center">
+            <%= image_tag @property.images[0], class:"w-24 h-24 object-cover rounded-md"%>
+            <div class="ml-3 text-black font-medium">
+                <div class="font-medium text-lg"><%= @property.name %> - <%= @property.city %>, <%= @property.state %></div>
+                <p class="font-light text-gray-700">Room in the Guest House</p>
+                <span class="inline-flex items-center pointer-events-none block text-sm font-normal text-black">
+                <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+                    <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
+                </svg>
+                <%= @property.average_final_rating.round(2) %> (<%= @property.reviews_count %> reviews)
+                </span>
+            </div>
     </div>
         
     <div class="mt-8 border-t border-gray-300">
