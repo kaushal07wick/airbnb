@@ -67,7 +67,8 @@
     </div>
 
     <!-- Property info -->
-    <div class="flex mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8">
+    <div class="mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8">
+      <!-- Name + Description -->
       <div class="lg:col-span-2 lg:pr-8">
         <h2 class="text-xl font-medium leading-6 text-gray-900 sm:truncate"><%= @property.name %>, <%= @property.country %></h2>
         <div class="mt-1 font-light">
@@ -92,98 +93,100 @@
             <span class="font-light">No reviews yet</span>
           <% end %>
         </div>
-      </div>
 
-      <div class="py-10 lg:col-span-2 lg:col-start-1 lg:pr-8">
         <!-- Description and details -->
-        <div class="border-t border-gray-200 pt-10 mt-4">
+        <div class="border-t border-gray-200 pt-10 mt-4 mb-8">
           <h3 class="sr-only">Description</h3>
 
           <div class="space-y-6">
             <p class="text-base text-gray-900"><%= @property.description.to_plain_text.truncate(400) %></p>
             <% if @property.description.to_plain_text.length > 400 %>
-              <div
+              <div 
+                class="flex items-center gap-1"
                 data-controller="description"
                 data-action="click->description#toggleDescriptionModal"
-                class="flex items-center gap-1">
+              >
                 <span class="font-medium underline">Show more</span>
                 <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style="height: 12px; width: 12px; display: block; fill: var(--f-k-smk-x);"><path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path></svg>
               </div>
-              <%= render 'shared/modal', modalTriggerId:"description", content: 'properties/description_modal' , content_params: {description: @property.description}%>
+
+              <%= render 'shared/modal', modalTriggerId: "description", content: 'properties/description_modal', content_params: {description: @property.description} %>
             <% end %>
           </div>
         </div>
-      </div>
-      <!-- Booking Component -->
-      <div 
-        class="mt-4 lg:mt-0 border-2 rounded-2xl p-6 shadow-xl"
-        data-controller="booking"
-        data-per-night-price="<%= humanized_money(@property.price)%>"
-        data-blocked-dates="<%= @blocked_dates %>"
-        >
-        <h2 class="sr-only">Booking Information</h2>
-        <p class="text-lg font-light tracking-tight text-gray-900"> <span class="text-3xl font-semibold"><%= humanized_money_with_symbol(@property.price)%></span> night</p></p>
-        <div class="flex mt-6">
-          <div class="rounded-l-lg px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-primary">
-            <label for="checkin" class="block text-xs font-medium text-gray-900">Check-In</label>
-            <input 
-            type="text" 
-            name="checkin" 
-            id="checkin" 
-            value="<%= Date.tomorrow.strftime('%Y-%m-%d') %>"
-            data-booking-target="checkin"
-            class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-          </div>
-         <div class="rounded-r-lg px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-primary">
-            <label for="checkout" class="block text-xs font-medium text-gray-900">Check-Out</label>
-            <input 
-            type="text" 
-            name="checkout" 
-            id="checkout" 
-            value="<%= (Date.tomorrow + 1.day).strftime('%Y-%m-%d') %>"
-            data-booking-target="checkout"
-            class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-          </div>
-          </div>
-        <form class="mt-10">
-          <button 
-          type="submit" 
-          data-reserve-property-url="<%= new_property_booking_path(@property) %>"
-          data-action="click->booking#reserveProperty"
-          class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-primary-dark px-8 py-3 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >Reserve</button>
-          <p class="py-4 text-center text-sm">You won't be charged yet</p>
-          <div class="mt-2">
-            <div class="flex justify-between">
-              <p><%= humanized_money_with_symbol(@property.price) %> X <span data-booking-target="numberOfNights">1</span> night</p>
-              <p><%= currency_symbol %><span data-booking-target="baseFare">0</span></p>
-            </div>
-            <div class="flex justify-between mt-2">
-              <p class="underline">Airbnb Service Fee</p>
-              <p> <%= currency_symbol %> <span data-booking-target="serviceFee">0</span></p>
-            </div>
-          </div>
-          <div class="relative mt-2">
-            <div class="absolute inset-0 flex items-center" aria-hidden="true">
-              <div class="w-full border-t border-gray-300"> </div>
-            </div>
-            
-          </div>
-          <div class="flex justify-between mt-4">
-          <p class="font-semibold">Total</p>
-          <p class="font-semibold"><%= currency_symbol %><span data-booking-target="totalAmount">0</span> </p>
-          </div>
-        </form>
+
+        <!-- Amenities -->
+        <%= render :partial => 'properties/amenities', :locals => {:amenities => @property.amenities} %>
       </div>
 
-    <!-- Ameneties -->
-    <%= render :partial => 'properties/amenities', :locals => {:amenities => @property.amenities} %>
-      
+      <!-- Booking Component -->
+      <div 
+        class="mt-4 lg:mt-0 border rounded-xl p-6 shadow-xl h-min w-96"
+        data-controller="booking"
+        data-per-night-price="<%= humanized_money(@property.price) %>"
+        data-blocked-dates="<%= @blocked_dates %>"
+        >
+        <h2 class="sr-only">Booking information</h2>
+        <p class="text-lg font-light tracking-tight text-gray-900"><span class="text-2xl font-semibold"><%= humanized_money_with_symbol(@property.price) %></span> night</p>
+        <div class="flex mt-6">
+          <div class="rounded-l-lg px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-indigo-600">
+            <label for="checkin" class="block text-xs font-medium text-gray-900">CHECK-IN</label>
+            <input 
+              type="text" 
+              name="checkin" 
+              id="checkin" 
+              class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+              value="<%= Date.tomorrow.strftime('%Y-%m-%d') %>"
+              data-booking-target="checkin"
+              >
+          </div>
+
+          <div class="rounded-r-lg px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-400 focus-within:ring-2 focus-within:ring-indigo-600">
+            <label for="checkout" class="block text-xs font-medium text-gray-900">CHECK-OUT</label>
+            <input 
+              type="text" 
+              name="checkout" 
+              id="checkout" 
+              class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+              value="<%= (Date.tomorrow + 1.day).strftime('%Y-%m-%d') %>"
+              data-booking-target="checkout"
+              >
+          </div>
+
+        </div>
+        <button
+          data-reserve-property-url="<%= new_property_booking_path(@property) %>"
+          type="submit" 
+          data-action="click->booking#reserveProperty"
+          class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Reserve
+        </button>
+        <p class="font-light text-center text-sm py-4">You won't be charged yet</p>
+        <div class="mt-4">
+          <div class="flex justify-between font-light">
+            <p><%= humanized_money_with_symbol(@property.price) %> x <span data-booking-target="numberOfNights">1</span> night</p>
+            <p><%= currency_symbol %><span data-booking-target="baseFare">0</span></p>
+          </div>
+          <div class="flex justify-between font-light mt-4">
+            <p>Airbnb service fee</p>
+            <p><%= currency_symbol %><span data-booking-target="serviceFee">0</span></p>
+          </div>
+        </div>
+        <div class="relative py-6">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+        </div>
+        <div class="flex justify-between font-medium">
+          <p>Total</p>
+          <p><%= currency_symbol %><span data-booking-target="totalAmount">0</span></p>
+        </div>
+      </div>
     </div>
 
     <!-- Reviews -->
     <%= render :partial => 'properties/reviews', :locals => {:property => @property} %>
-
   </main>
 </div>
 
