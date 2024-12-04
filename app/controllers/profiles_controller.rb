@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
-    def show
+    before_action :authenticate_user!
+    def index
     end
 end

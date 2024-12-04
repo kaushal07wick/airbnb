@@ -2,17 +2,17 @@
   <main class="pt-4 pb-16">
     <div class="mx-auto max-w-2xl px-4 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-4 lg:grid-rows-[auto,auto,1fr] lg:gap-x-20 lg:px-8">
       <div class="lg:col-span-2 lg:pr-8">
-        <h2 class="text-3xl font-medium leading-6 text-gray-900 ">Confirm and Pay</h2>
+        <h2 class="text-4xl font-medium leading-6 text-gray-900 ">Confirm and Pay</h2>
         <div class="mt-12">
-            <h3 class="text-2xl font-medium leading-6 text-gray-900 ">Your Trip</h3>
-            <div class="mt-10 flex justify-between">
-                <p class="text-xl font-medium">Dates</p>
-                <p ><%= @checkin_date.strftime('%e %b') %> - <%= @checkout_date.strftime('%e %b') %></p>
-            </div>
-            <div class=" mt-10 flex justify-between">
-                <p class="text-xl font-medium">Guests</p>
-                <p >2 Guests</p>
-            </div>
+          <h3 class="text-2xl font-medium leading-6 text-gray-900 ">Your Trip</h3>
+          <div class="mt-10 flex justify-between">
+              <p class="text-xl font-medium">Dates</p>
+              <p ><%= @checkin_date.strftime('%e %b') %> - <%= @checkout_date.strftime('%e %b') %></p>
+          </div>
+          <div class=" mt-4 flex justify-between">
+              <p class="text-xl font-medium">Guests</p>
+              <p >2 Guests</p>
+          </div>
         </div>
         <div class="mt-12 border-t border-gray-300 pt-12">
           <h3 class="text-2xl font-medium text-gray-900">Ground rules</h3>
@@ -21,6 +21,7 @@
             <li>
               Follow the house rules
             </li>
+
             <li>
               Treat your Host's home like your own
             </li>
@@ -29,65 +30,66 @@
 
         <div>
           <div class="mt-8 border-t border-gray-300 pt-12" data-turbo="false">
-          <%= form_with url: booking_payments_path(
-            property_id: @property.id,
-            user_id: current_user.id,
-            checkin_date: @checkin_date,
-            checkout_date: @checkout_date,
-            base_fare: @base_fare,
-            service_fee: @service_fee,
-            total_amount: @total_amount
-          ), method: :post do |form| %>
+            <%= form_with url: booking_payments_path(
+              property_id: @property.id,
+              user_id: current_user.id,
+              checkin_date: @checkin_date,
+              checkout_date: @checkout_date,
+              base_fare: @base_fare,
+              service_fee: @service_fee,
+              total_amount: @total_amount
+            ), method: :post do |form| %>
             <%= form.submit "Confirm and pay", class:"rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white text-lg shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" %>
           <% end %>
         </div>
-        </div>
+      </div>
+  </div>
 
+<!-- Booking Component -->
+<div class="mt-4 lg:mt-0 border-2 border-gray-300 lg:col-span-2 rounded-2xl p-6 h-min"
+  data-per-night-price="<%= humanized_money(@property.price)%>"
+  data-blocked-dates="<%= @blocked_dates %>">
+  <h2 class="sr-only">Booking Information</h2>
+    <div class="m-6">
+      <div class="flex items-center">
+        <%= image_tag @property.images[0], class:"w-24 h-24 object-cover rounded-md"%>
+          <div class="ml-3 text-black font-medium">
+            <div class="font-medium text-lg"><%= @property.name %> - <%= @property.city %>, <%= @property.state %></div>
+              <p class="font-light text-gray-700">Room in the Guest House</p>
+              <span class="inline-flex items-center pointer-events-none block text-sm font-normal text-black">
+              <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
+            <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
+          </svg>
+      <%= @property.average_final_rating.round(2) %> (<%= @property.reviews_count %> reviews)
+    </span>
+  </div>
+</div>
         
+<div class="mt-8 border-t border-gray-300">
+  <h3 class="text-2xl mt-6 font-medium  leading-6 text-gray-900 ">Trip Details</h3>
+    <div class="flex border-b border-gray-300 py-4 justify-between font-medium mt-2">
+      <p>Dates</p>
+      <p><%= @checkin_date.strftime("%d, %b") %> - <%= @checkout_date.strftime("%d, %b %Y") %></p>
     </div>
-
-    <!-- Booking Component -->
-    <div class="mt-4 lg:mt-0 border-2 border-gray-300 lg:col-span-2 rounded-2xl p-6 h-min"
-     data-per-night-price="<%= humanized_money(@property.price)%>"
-     data-blocked-dates="<%= @blocked_dates %>">
-        <h2 class="sr-only">Booking Information</h2>
-          <div class="m-6">
-            <div class="flex items-center">
-              <%= image_tag @property.images[0], class:"w-24 h-24 object-cover rounded-md"%>
-                <div class="ml-3 text-black font-medium">
-                  <div class="font-medium text-lg"><%= @property.name %> - <%= @property.city %>, <%= @property.state %></div>
-                    <p class="font-light text-gray-700">Room in the Guest House</p>
-                      <span class="inline-flex items-center pointer-events-none block text-sm font-normal text-black">
-                      <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
-                      <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
-                      </svg>
-                    <%= @property.average_final_rating.round(2) %> (<%= @property.reviews_count %> reviews)
-                  </span>
-                </div>
-        </div>
-        
-    <div class="mt-8 border-t border-gray-300">
-        <h3 class="text-2xl mt-4 font-medium  leading-6 text-gray-900 ">Price Details</h3>
-        <div class="flex justify-between font-light mt-4">
-            <p><%= humanized_money_with_symbol(@base_fare) %> X <span data-booking-target="numberOfNights"><%= @total_nights %></span> night</p>
-            <p><%= currency_symbol %><span data-booking-target="baseFare"><%= @base_fare %></span></p>
-        </div>
-        <div class="flex justify-between mt-2">
-            <p class="underline">Airbnb Service Fee</p>
-            <p> <%= currency_symbol %> <span data-booking-target="serviceFee"><%= @service_fee %></span></p>
-        </div>
-        </div>
-        <div class="relative mt-2">
-        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-            <div class="w-full border-t border-gray-300"> </div>
-        </div>
-        
-        </div>
-        <div class="flex justify-between mt-4">
-        <p class="font-semibold">Total</p>
-        <p class="font-semibold"><%= currency_symbol %><span data-booking-target="totalAmount"><%= @total_amount %></span> </p>
+    <h3 class="text-2xl mt-4 font-medium  leading-6 text-gray-900 ">Price Details</h3>
+      <div class="flex justify-between font-light mt-4">
+          <p class="font-normal"><%= humanized_money_with_symbol(@property.price) %> X <%= @total_nights %></span> night</p>
+          <p class="font-normal"><%= currency_symbol %><%= @base_fare %></span></p>
+      </div>
+      <div class="flex justify-between mt-2">
+          <p class="underline">Airbnb Service Fee</p>
+          <p> <%= currency_symbol %><%= @service_fee %></span></p>
+      </div>
+    </div>
+    <div class="relative mt-2">
+      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+      <div class="w-full border-t border-gray-300"> </div>
     </div>
 
     </div>
-
+    <div class="flex justify-between mt-4">
+      <p class="font-semibold">Total</p>
+      <p class="font-semibold"><%= currency_symbol %><%= @total_amount %></span> </p>
+    </div>
+</div>
  

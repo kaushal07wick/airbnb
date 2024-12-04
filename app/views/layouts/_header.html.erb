@@ -54,17 +54,18 @@
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">Open user menu</span>
               
-              <% if user_signed_in?  && current_user.picture.nil?%>
-                <%= image_tag current_user.picture,  class:"h-8 w-8 rounded-full" %>
+               <% if user_signed_in? && current_user.profile.picture.present? %>
+                <%= image_tag current_user.profile.picture, class:"h-8 w-8 rounded-full" %>
               <% else %>
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" viewBox="0 0 24 24" 
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
                   stroke-width="1.5" 
-                  stroke="primary-dark" 
-                  class="h-8 w-8 rounded-full">
-                  <path stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  stroke="currentColor" 
+                  class="h-8 w-8 rounded-full"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
               <% end %>
             </button>
@@ -85,7 +86,7 @@
             tabindex="-1">
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <% if user_signed_in? %>
-            <%= link_to "Account", profile_path(current_user.id), class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+            <%= link_to "Account", profiles_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
             <%= link_to "Wishlist", wishlists_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
             <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
 
@@ -105,8 +106,8 @@
     <div class="border-t border-gray-200 pb-3 pt-4">
       <div class="flex items-center px-4">
         <div class="flex-shrink-0">
-          <% if user_signed_in? %>
-                <%= image_tag current_user.picture,  class:"h-8 w-8 rounded-full" %>
+          <% if user_signed_in? && current_user.profile.picture.present? %>
+                <%= image_tag current_user.profile.picture,  class:"h-8 w-8 rounded-full" %>
               <% else %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -115,8 +116,8 @@
             </div>
         <div class="ml-3">
         <% if user_signed_in? %>
-          <div class="text-base font-medium text-gray-800"><%= current_user.name  %></div>
-          <div class="text-sm font-medium text-gray-500"><%= current_user.email %></div>
+          <div class="text-base font-medium text-gray-800">Airbnb</div>
+          <div class="text-sm font-medium text-gray-500">Airbnb@gmail.com</div>
         <% else %>
           <div class="text-base font-medium text-gray-800">Guest</div>
           <div class="text-sm font-medium text-gray-500">Not logged in</div>
@@ -136,7 +137,7 @@
             aria-labelledby="user-menu-button" 
             tabindex="-1">
          <% if user_signed_in? %>
-            <%= link_to "Account", profile_path(current_user.id), class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+            <%= link_to "Account", profiles_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
             <%= link_to "Wishlist", wishlists_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
             <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
 
