@@ -19,17 +19,27 @@
                       <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
                       <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
                       </svg>
-                    <%= reservation.property.average_final_rating.round(2) %> (<%= reservation.property.reviews_count %> reviews)
+                      <% if reservation.property.reviews_count > 0 %>
+                        <%= reservation.property.average_final_rating.round(2) %> (<%= reservation.property.reviews_count %> reviews)
+                      <% else %>
+                        New
+                      <% end %>
                     </span>
                   </div>
                 </div>
+                <% if reservation.review.present? %>
+                  <span class="inline-flex items-center pointer-events-none block text-md font-semibold text-black text-2xl">
+                    <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 16px; width: 16px; fill: currentcolor;">
+                    <path fill-rule="evenodd" d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"></path>
+                    </svg>
+                    <%= reservation.property.average_final_rating.round(2) %>
+                  </span>
+                <% else  %>
+                  <%= link_to 'Add Review', new_reservation_review_path(reservation), class:"flex h-10 mt-4 items-center justify-center rounded-md border border-transparent bg-primary px-8 py-1 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"  %>
+                <% end %>
+          </div>
 
-              <%= link_to 'Add Review', new_reservation_review_path(reservation), class:"flex h-10 items-center justify-center rounded-md border border-transparent bg-primary px-8 py-1 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"  %>
-        </div>
-
-
-
-        <div class="mt-8 border-t border-gray-300">
+        <div class="mt-2 border-t border-gray-300">
           <h3 class="text-2xl mt-6 font-medium leading-6 text-gray-900 ">Trip Details</h3>
             <div class="flex justify-between font-normal mt-4">
               <p>Dates</p>
@@ -38,9 +48,13 @@
                 <%= reservation.checkout_date.strftime("%d, %b %Y") %>
               </p>              
             </div>
+            <div class="flex justify-between font-normal mt-2">
+              <p class=" underline">Guests</p>
+              <p class="font-semibold">2 Guests</p>
+            </div>
         </div>
 
-        <div class="relative py-6">
+        <div class="relative mt-2 mb-10">
           <div class="absolute inset-0 flex items-center" aria-hidden="true">
             <div class="w-full border-t border-gray-300"></div>
           </div>
@@ -58,15 +72,15 @@
           </div>
           </div>
 
-          <div class="relative py-6">
+          <div class="relative py-2">
             <div class="absolute inset-0 flex items-center" aria-hidden="true">
               <div class="w-full border-t border-gray-300"> </div>
             </div>
           </div>
 
-          <div class="flex justify-between mt-4">
-            <p class="font-semibold">Total</p>
-            <p><%= humanized_money_with_symbol(reservation.payment.total_amount) %></p>
+          <div class="flex justify-between mt-2">
+            <p class="font-bold">Total</p>
+            <p class="font-bold"><%= humanized_money_with_symbol(reservation.payment.total_amount) %></p>
           </div>
         </div>
       <% end %>

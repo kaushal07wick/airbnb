@@ -3,8 +3,10 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         
+
   has_one :profile, dependent: :destroy
+
+  has_many :reviews, dependent: :destroy
 
   has_many :wishlists, dependent: :destroy
   has_many :wishlisted_properties, through: :wishlists, source: :property,  dependent: :destroy
@@ -16,8 +18,8 @@ class User < ApplicationRecord
 
   after_create :new_profile
 
-  private 
-  
+  private
+
   def new_profile
     self.profile = Profile.new
     save!

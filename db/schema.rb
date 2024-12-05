@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_02_234714) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_05_054430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,8 +99,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_234714) do
     t.datetime "updated_at", null: false
     t.integer "price_cents"
     t.string "price_currency"
-    t.integer "reviews_count"
-    t.decimal "average_final_rating"
+    t.integer "reviews_count", default: 0
+    t.decimal "average_final_rating", default: "0.0"
     t.integer "guest_count", default: 0
     t.integer "bedroom_count", default: 0
     t.integer "bed_count", default: 0
@@ -142,7 +142,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_234714) do
     t.bigint "property_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "reservation_id", null: false
     t.index ["property_id"], name: "index_reviews_on_property_id"
+    t.index ["reservation_id"], name: "index_reviews_on_reservation_id"
+    t.index ["user_id", "property_id", "reservation_id"], name: "index_reviews_on_user_id_and_property_id_and_reservation_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
@@ -177,6 +180,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_234714) do
   add_foreign_key "reservations", "properties"
   add_foreign_key "reservations", "users"
   add_foreign_key "reviews", "properties"
+  add_foreign_key "reviews", "reservations"
   add_foreign_key "reviews", "users"
   add_foreign_key "wishlists", "properties"
   add_foreign_key "wishlists", "users"
