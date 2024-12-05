@@ -6,7 +6,7 @@
             <ul role="list" class="-mx-2 space-y-1">
                 <li>
                 <!-- Current: "bg-gray-50 text-primary", Default: "text-gray-700 hover:text-primary hover:bg-gray-50" -->
-                <%= link_to profiles_path, 
+                <%= link_to edit_profile_path, 
                 class:"#{controller_name == 'profiles' ? 'bg-gray-50 text-primary' : 'text-gray-700 bg-gray-50' } group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold",  
                 role:"menuitem", 
                 tabindex:"-1" do %>
