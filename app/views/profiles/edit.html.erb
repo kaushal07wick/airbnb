@@ -7,35 +7,115 @@
     <div>
       <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
       <%= form_with model: @profile, url: profile_path, class:"mt-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6" do |f| %>
-      
+        
+      <div class="sm:col-span-full">
+        <%= f.label :picture, class: 'block text-sm font-medium leading-6 text-gray-900' %>
+        <div class="flex gap-4 flex-col mt-4">
+          <!-- Cropping Area -->
+          <div class="relative">
+            <%= image_tag @profile.picture, id: "profile-picture-preview", class: "h-48 w-48 rounded-full border-2 border-gray-300" %>
+            <img id="image-crop-preview" class="hidden" />
+          </div>
+
+          <!-- File Input -->
+          <%= f.file_field :picture, id: "profile-picture-input" %>
+
+          <!-- Action Buttons -->
+          <div class="mt-4">
+            <button type="button" id="crop-image-btn" class="bg-primary hover:bg-primary-dark text-white px-4 py-1 rounded">Crop</button>
+            <button type="button" id="reset-image-btn" class="bg-gray-500 text-white px-4 py-1 rounded">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.getElementById("profile-picture-input");
+        const cropPreview = document.getElementById("image-crop-preview");
+        const profilePreview = document.getElementById("profile-picture-preview");
+        const cropButton = document.getElementById("crop-image-btn");
+        const resetButton = document.getElementById("reset-image-btn");
+        let cropper;
+
+        // When a new image is selected
+        fileInput.addEventListener("change", (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              cropPreview.src = e.target.result;
+              cropPreview.classList.remove("hidden");
+              profilePreview.classList.add("hidden");
+
+              // Initialize Cropper.js
+              if (cropper) cropper.destroy(); // Destroy existing cropper if any
+              cropper = new Cropper(cropPreview, {
+                aspectRatio: 1, // Circular crop
+                viewMode: 1,
+                cropBoxResizable: false,
+                cropBoxMovable: false,
+              });
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Crop the image
+        cropButton.addEventListener("click", () => {
+          if (cropper) {
+            const canvas = cropper.getCroppedCanvas({
+              width: 200, // Final cropped image dimensions
+              height: 200,
+              backgroundColor: '#fff',
+            });
+            profilePreview.src = canvas.toDataURL("image/png");
+            profilePreview.classList.remove("hidden");
+            cropPreview.classList.add("hidden");
+            cropper.destroy();
+            cropper = null;
+          }
+        });
+
+        // Reset the image
+        resetButton.addEventListener("click", () => {
+          cropPreview.classList.add("hidden");
+          profilePreview.classList.remove("hidden");
+          if (cropper) {
+            cropper.destroy();
+            cropper = null;
+          }
+        });
+      });
+      </script>
+
       <div class="sm:col-span-3">
         <%= f.label :name, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :name, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.text_field :name, class: 'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
 
       <div class="sm:col-span-full">
         <%= f.label :address_1, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :address_1, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.text_field :address_1, class: 'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
 
       <div class="sm:col-span-full">
         <%= f.label :address_2, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :address_2, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.text_field :address_2, class: 'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
 
       <div class="sm:col-span-2">
         <%= f.label :city, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :city, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.text_field :city, class: 'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
 
        <div class="sm:col-span-2">
         <%= f.label :state, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :state, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.text_field :state, class: 'mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
       
-      <div class="sm:col-span-2">
+      <div class="sm:col-span-full">
         <%= f.label :country, class: 'block text-sm font-medium leading-6 text-gray-900' %>
-        <%= f.text_field :country, class: ' mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
+        <%= f.country_select :country_code, class: 'mt-4 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 sm:text-sm sm:leading-6'  %>
       </div>
 
       <%= f.submit "Save", class:"cursor-pointer mt-4 flex items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" %>

@@ -13,7 +13,7 @@
           <div class="flex items-center">
             <%= image_tag reservation.property.images[0], class:"w-24 h-24 object-cover rounded-md"%>
               <div class="ml-3 text-black font-medium">
-                <div class="font-medium text-lg"><%= reservation.property.name %> - <%= reservation.property.city %>, <%= reservation.property.state %></div>
+                <div class="font-medium text-lg"><%= reservation.property.name %> - <%= reservation.property.city %>, <%= country_name(reservation.property.country_code) %></div>
                   <p class="font-light text-gray-700">Room in the Guest House</p>
                     <span class="inline-flex items-center pointer-events-none block text-sm font-normal text-black">
                       <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; height: 12px; width: 12px; fill: currentcolor;">
