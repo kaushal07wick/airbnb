@@ -5,7 +5,19 @@
   <main class="px-8 py-8 border rounded-md lg:flex-auto my-8">
 
     <div>
-      <h2 class="text-2xl font-semibold leading-7 text-gray-900">Properties</h2>
+      <div class="flex justify-between">
+        <h2 class="text-2xl font-semibold leading-7 text-gray-900">Properties</h2>
+        <%= link_to "Add Property", new_owner_property_path, class:"cursor-pointer mt-4 flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-2 text-base font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" %>
+
+      </div>
+      <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+        <% @properties.each do |property| %>
+        <div class="flex flex-col">
+          <%= render 'properties/property_item', property: property, minimal_details: false %>
+          <%= link_to "Edit Property", edit_owner_property_path(property), class:"cursor-pointer mt-4 flex items-center justify-center rounded-md border-2 border-primary text-primary bg-white px-6 py-2 text-base font-medium hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" %>
+        </div>
+        <%end%>
+      </div>
     </div>
   </main>
 </div>
