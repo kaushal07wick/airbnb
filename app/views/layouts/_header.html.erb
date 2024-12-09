@@ -22,31 +22,33 @@
         </div>
       </div>
       <div class="relative z-10 flex items-center lg:hidden">
-        <!-- Mobile menu button -->
-        <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="absolute -inset-0.5"></span>
-          <span class="sr-only">Open menu</span>
-          <!--
-            Icon when menu is closed.
-
-            Menu open: "hidden", Menu closed: "block"
-          -->
-          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      <!-- Mobile menu button -->
+      <button data-header-target="openUserMenuMob" 
+        type="button" 
+        class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-offset-2" 
+        id="user-menu-button" 
+        aria-expanded="false" 
+        aria-haspopup="true">
+        <span class="absolute -inset-1.5"></span>
+        <span class="sr-only">Open user menu</span>
+        
+        <% if user_signed_in? && current_user.profile.picture.present? %>
+          <%= image_tag current_user.profile.picture, class:"h-8 w-8 rounded-full" %>
+        <% else %>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            class="h-8 w-8 rounded-full"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           </svg>
-          <!--
-            Icon when menu is open.
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
-          <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-
-
+        <% end %>
+      </button>
+    </div>
+      <div class=" hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
         <!-- Profile dropdown -->
         <div class="relative ml-4 flex-shrink-0">
           <div>
@@ -54,7 +56,7 @@
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">Open user menu</span>
               
-               <% if user_signed_in? && current_user.profile.picture.present? %>
+              <% if user_signed_in? && current_user.profile.picture.present? %>
                 <%= image_tag current_user.profile.picture, class:"h-8 w-8 rounded-full" %>
               <% else %>
                 <svg 
@@ -70,7 +72,6 @@
               <% end %>
             </button>
           </div>
-
           <div 
             data-header-target="dropdown" 
             data-transition-enter="transition ease-out duration-1000"
@@ -86,11 +87,10 @@
             tabindex="-1">
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <% if user_signed_in? %>
-            <%= link_to "Account", edit_profile_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Dashboard", owner_dashboard_index_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Wishlist", wishlists_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-
+              <%= link_to "Account", edit_profile_path, class:"block hover:underline decoration-primary-dark px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+              <%= link_to "Dashboard", owner_dashboard_index_path, class:"block hover:underline decoration-primary-dark px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+              <%= link_to "Wishlist", wishlists_path, class:"hover:underline decoration-primary-dark block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+              <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:" hover:underline decoration-primary-dark block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
             <% else %>
                 <%= link_to "Log In", new_user_session_path, class:"js-login block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
                 <%= link_to "Sign Up", new_user_registration_path, class:"block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
@@ -101,57 +101,30 @@
     </div>
   </div>
 
-  <!-- Mobile menu, show/hide based on menu state. -->
-  <nav class="lg:hidden" aria-label="Global" id="mobile-menu">
-    
-    <div class="border-t border-gray-200 pb-3 pt-4">
-      <div class="flex items-center px-4">
-        <div class="flex-shrink-0">
-          <button data-header-target="openUserMenu" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">Open user menu</span>
-              
-               <% if user_signed_in? && current_user.profile.picture.present? %>
-                <%= image_tag current_user.profile.picture, class:"h-8 w-8 rounded-full object-cover" %>
-              <% else %>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke-width="1.5" 
-                  stroke="currentColor" 
-                  class="h-8 w-8 rounded-full"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-              <% end %>
-            </button>
-        </div>
-            <div 
-            data-header-target="dropdown" 
-            data-transition-enter="transition ease-out duration-1000"
-            data-transition-enter-start="transform opacity-0 scale-95"
-            data-transition-enter-end="transform opacity-100 scale-100"
-            data-transition-leave="transition ease-in duration-7500"
-            data-transition-leave-start="transform opacity-100 scale-100"
-            data-transition-leave-end="transform opacity-0 scale-95"
-            class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" 
-            role="menu" 
-            aria-orientation="vertical" 
-            aria-labelledby="user-menu-button" 
-            tabindex="-1">
-            <!-- Active: "bg-gray-100", Not Active: "" -->
-            <% if user_signed_in? %>
-            <%= link_to "Account", edit_profile_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Wishlist", wishlists_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Dashboard", owner_dashboard_index_path, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:"block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
-            <% else %>
-                <%= link_to "Log In", new_user_session_path, class:"js-login block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
-                <%= link_to "Sign Up", new_user_registration_path, class:"block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
-            <% end %>
-          </div>
-      </div>
+    <!-- Mobile menu, show/hide based on menu state. -->
+  
+    <div 
+      data-header-target="dropdownMob" 
+      data-transition-enter="transition ease-out duration-1000"
+      data-transition-enter-start="transform opacity-0 scale-95"
+      data-transition-enter-end="transform opacity-100 scale-100"
+      data-transition-leave="transition ease-in duration-7500"
+      data-transition-leave-start="transform opacity-100 scale-100"
+      data-transition-leave-end="transform opacity-0 scale-95"
+      class="hidden absolute right-10 z-10 w-36 mt-[-8] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" 
+      role="menu" 
+      aria-orientation="vertical" 
+      aria-labelledby="user-menu-button" 
+      tabindex="-1">
+      <!-- Active: "bg-gray-100", Not Active: "" -->
+      <% if user_signed_in? %>
+        <%= link_to "Account", edit_profile_path, class:"block hover:underline decoration-primary-dark px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+        <%= link_to "Dashboard", owner_dashboard_index_path, class:"block hover:underline decoration-primary-dark px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+        <%= link_to "Wishlist", wishlists_path, class:"block hover:underline decoration-primary-dark px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+        <%= link_to "Log out", destroy_user_session_path, data: {"turbo-method": :delete}, class:"hover:underline decoration-primary-dark block px-4 py-2 text-sm text-gray-700",  role:"menuitem" ,tabindex:"-1" %>
+      <% else %>
+          <%= link_to "Log In", new_user_session_path, class:"js-login block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
+          <%= link_to "Sign Up", new_user_registration_path, class:"block px-4 py-2 text-sm text-gray-700", role:"menuitem", tabindex:"-1"%>
+      <% end %>
     </div>
-  </nav>
 </header>
